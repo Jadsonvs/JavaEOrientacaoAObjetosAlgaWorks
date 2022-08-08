@@ -1,0 +1,466 @@
+Os Wrapper são conhecidos na linguagem Java como classes especiais que possuem métodos capazes de fazer conversões em variáveis primitivas e também de encapsular tipos primitivos para serem trabalhados como objetos, ou seja, é feita um embrulho de streams que são fluxo de dados através de canais.
+
+Sendo assim, existe uma classe Wrapper para cada tipo primitivo identificado pelo mesmo nome do tipo que possui e tendo a primeira letra maiúscula. Essa regra de declaração é aplicada a todos os tipos, exceto aos que sãochar classificados como Character e boolean como Boolean.
+
+Hierarquia Classes Wrapper
+Figura 1. Hierarquia das classes Wrapper.
+
+De acordo com a hierarquia mostrada na Figura 1, cada tipo wrapper numérico em Java são subclasses da superclasse abstrataNumber (Java.lang.Number) que consegue acessar todos os métodos values que são: doubleValue(), floatValue(), longValue(), intValue(), shortValue() e byteValue().
+
+Trabalhando com os construtores Wrappers
+Nos construtores Wrappers apenas a classe Character não fornece dois construtores, sendo que as demais aceitam dois construtores. A Listagem 1 mostra como funciona na prática a declaração desses construtores.
+
+Listagem 1. Representação dos construtores de algumas classes Wrapper.
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+public class TestaWrapper {
+    public static void main(String[] args) {
+         
+        String numInt = "9822";
+         
+        //Representação em String do tipo que está sendo criado
+        Float fNum1 = new Float("500.50");
+        Integer iNum1 = new Integer(numInt);
+        Double dNum1 = new Double("512.22");
+         
+        //o argumento somente aceita do tipo char, por isso que é usado aspas simples
+        Character cNum = new Character('a'); 
+         
+        //Criação do tipo primitivo natural
+        Float fNum2 = new Float(500.50);
+        Integer iNum2 = new Integer(2800);
+        Double dNum2 = new Double(512.22);
+         
+        System.out.println("Float representadopor string: "+fNum1);
+        System.out.println("Float natural: "+fNum2);
+        System.out.println("Integer representado por string: "+iNum1);
+        System.out.println("Char: "+cNum);
+    }
+}
+Nos argumentos wrappers Boolean podem ser usados valores como: true, false ou String. Um ponto de observação é que os valores declarados dentro do construtor não diferencia as letras maiúsculas de minúsculas. A Listagem 2, gera um amostra do que foi explicado acima. Seria interessante,tentar adivinhar qual seria a saída dos valores antes de tentar reproduzir para compreender o entendimento.
+
+Listagem 2. Representação dos construtores de classes WrapperBoolean.
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+public class TestaWrapperBoolean {
+    public static void main(String[] args) {
+         
+        boolean flag1 = true;
+        boolean flag2 = false;
+        String flag3 = "true";
+         
+        Boolean b1 = new Boolean("truE");
+        Boolean b2 = new Boolean("TRUE");
+        Boolean b3 = new Boolean("TuE");
+        Boolean b4 = new Boolean(flag3);
+ 
+        if(b1){
+            System.out.println("B1 é verdadeiro!");
+        }
+         
+        if(flag1 == b2){
+            System.out.println("flag1 == b2: Igual");
+        }else{
+            System.out.println("flag1 == b2: Diferente");
+        }
+ 
+        System.out.println(flag1 == b1 ? "flag1 == b1: Igual" : "flag1 == b1: Diferente");
+        System.out.println(flag1 == b3 ? "flag1 == b3: Igual" : "flag1 == b3: Diferente");
+        System.out.println(flag1 == b4 ? "flag1 == b4: Igual" : "flag1 == b4: Diferente");
+         
+        Boolean b5 = new Boolean("false");
+        Boolean b6 = new Boolean("faLse");
+        Boolean b7 = new Boolean("FALSE");
+        Boolean b8 = new Boolean("flse");
+         
+        System.out.println(flag2 == b5 ? "flag2 == b5: Igual" : "flag2 == b5: Diferente");
+        System.out.println(flag2 == b6 ? "flag2 == b6: Igual" : "flag2 == b6: Diferente");
+        System.out.println(flag2 == b7 ? "flag2 == b7: Igual" : "flag2 == b7: Diferente");
+        System.out.println(flag2 == b8 ? "flag2 == b8: Diferente" : "flag2 == b8: Igual" );
+    }
+}
+Saída do código da Listagem 2:
+
+B1 é verdadeiro!
+flag1 == b2: Igual
+flag1 == b1: Igual
+flag1 == b3: Diferente
+flag1 == b4: Igual
+flag2 == b5: Igual
+flag2 == b6: Igual
+flag2 == b7: Igual
+flag2 == b8: Diferente
+
+Em caso de estudo, a Tabela 01 mostra todas as classes Wrapper com suas características definidas quando usadas no construtor.
+
+Tipo primitivo
+
+Classe Wrapper
+
+Argumentos do construtor
+
+boolean
+
+Boolean
+
+booleanou String
+
+byte
+
+Byte
+
+byte ou String
+
+char
+
+Character
+
+char
+
+int
+
+Integer
+
+int ou String
+
+float
+
+Float
+
+float, double ou String
+
+double
+
+Double
+
+double ou String
+
+long
+
+Long
+
+long ou String
+
+short
+
+Short
+
+short ou String
+
+Tabela 1. Classes wrapper e argumentos dos construtores
+
+Conversão em wrappers
+Para fazer a conversão de tipos primitivos para classes wrapperssão usados os seguintes métodos:
+
+xxxValue() – Esse tipo de método não contém argumentos e é utilizado quando precisa realizar uma conversão do valor de um objeto wrapper para um objeto primitivo.
+
+Listagem 3. Exemplo de conversão xxxValue() - wrapper para tipo primitivo.
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+publicclassConvertWrapper {
+ 
+    publicstaticvoidmain(String[] args) {
+        //cria um objeto wrapper
+        Integer velocidade = new Integer(587);
+         
+        //converte a variável velocidade para tipo primitivo
+        double total = velocidade.doubleValue();
+        short total1 = velocidade.shortValue();
+        byte total2 = velocidade.byteValue();
+         
+        Float pi = new Float(3.14f);
+        int valorPi = pi.intValue();
+         
+        System.out.println("Valor de PI arredondado: "+valorPi);    
+        System.out.println("Total: "+total);
+ 
+    }
+}
+Saída do código da Listagem 3:
+
+Valor de PI arredondado: 3
+Total: 587.0
+
+parseXxx(String s) – Método do tipo primitivo usado para converter um objeto String para um tipo primitivo, sendo que retorna um primitivo nomeado.
+
+Listagem 4. Conversão de uma String para o tipo primitivo.
+
+1
+2
+double soma = Double.parseDouble("685.65");
+System.out.println("Soma: "+soma);
+Saída do código da Listagem 4:
+Soma: 685.65
+
+valueOf(String s) – Método do tipo wrapper usado para converter um objeto String para um objeto wrapper, sendo que retorna um objeto wrapper recém criado do tipo que chamou o método.
+
+Listagem 5. Exemplo do método valueOf com a classe String.
+
+1
+2
+3
+4
+5
+6
+7
+Integer idade = new Integer(39);
+String idadeString = String.valueOf(idade);
+String velocidade = new String("568.55");
+Double velocidadeDouble = Double.valueOf(velocidade);
+         
+System.out.println("Idade string: "+idadeString);
+System.out.println("Velocidade double: "+velocidadeDouble); 
+toString() – Retorna a representação de um objeto (tipo primitivo encapsulado).
+
+Listagem 6: Exemplo da sobrescrição do método toString().
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+Classe Testadora
+ 
+Cliente cliente = new Cliente();
+cliente.setNome("Maria);
+cliente.setEndereco("Av. dos Mares, 321");
+ 
+System.out.println(cliente.toString());
+ 
+Classe Cliente
+@Override
+public String toString() {
+    return "Nome: "+getNome() + "\nEndereço: "+getEndereco();
+}
+Comparando variáveis primitivas com wrappers
+Na linguagem Java a comparação entre variáveis primitivas, referências e objetos gera certa confusão, pois é necessário tomar cuidados entre o operador de igualdade (==) e o método equals.
+
+Quando existe a comparação apenas com tipos primitivos é utilizado o operador de igualdade (==) e se caso o trabalho for com classes wrappers é invocado o método equals, pois serve para comparação de objetos. Porém, tem algumas restrições com a comparação de classes wrappers e tipos primitivos descritas abaixo:
+
+Tipos primitivos não conseguem invocar o método equals;
+Classes Wrappes não podem ser comparadas com o operador de igualdade (==);
+Listagem 7. Comparação com tipos primitivos e classes wrappers.
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+publicclassComparandoWrappers {
+    publicstaticvoidmain(String[] args) {
+        int num1 = 21;
+        double num2 = 21.0;
+         
+        Double num3 = new Double(282.22);
+        Integer num4 = new Integer(232);
+         
+        System.out.println(num1 == num2); //true
+        System.out.println(num3 == num4); //erro de compilação
+        System.out.println(num1 == num3); //false
+        System.out.println(num4.equals(num2)); //false
+    }
+} 
+Onde utilizar classes wrappers?
+No código da Listagem 8 mostramos a importância da utilização das classesWrappers no desenvolvimento de um sistema.
+
+Listagem 8. Aplicação das classes Wrappers em um sistema.
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+importjavax.swing.JOptionPane;
+ 
+publicclassAplicacaoWrapper {
+ 
+    publicstaticvoidmain(String[] args) {
+        Funcionariofuncionario = new Funcionario();
+        funcionario.setNome(JOptionPane.showInputDialog("Digite o nome do funcionário: "));
+         
+        //invocado as classes Wrappers para fazer a conversão, pois o argumento JOptionPane.showInputDialog é um objeto string
+        //e para ser inserido nos outros tipos primitivos é necessário fazer a conversão
+        funcionario.setIdade(Integer.parseInt(JOptionPane.showInputDialog("Digite a idade do funcionário: ")));
+        funcionario.setSalario(Float.parseFloat(JOptionPane.showInputDialog("Digite o salário do funcionário: ")));
+         
+        //exibição em tela dos dados digitados
+        JOptionPane.showMessageDialog(null, "Funcionário: "+funcionario.getNome() + 
+                                            "\n " +"Idade: "+funcionario.getIdade() +
+                                            "\n " + "Salário: "+funcionario.getSalario(),
+                "Detalhes Funcionário",JOptionPane.INFORMATION_MESSAGE);
+         
+        System.exit(0);
+    }
+}
+ 
+classFuncionario{
+    private String nome;
+    private int idade;
+    float salario;
+     
+    public String getNome() {
+        return nome;
+    }
+    publicvoidsetNome(String nome) {
+        this.nome = nome;
+    }
+    public int getIdade() {
+        return idade;
+    }
+    publicvoidsetIdade(int idade) {
+        this.idade = idade;
+    }
+    public float getSalario() {
+        return salario;
+    }
+    publicvoidsetSalario(float salario) {
+        this.salario = salario;
+    }   
+}
+Abaixo é mostrado através da Figura 2, o resultado após a inserção dos valores.
+
+Resultado listagem 8
+Figura 2. Resultado gerado da Listagem 8.
+
+Conclusão
+Contudo que foi mostrado nesse artigo conceitos e práticas das classes Wrappers. Espero que tenham gostado e qualquer dúvida ou sugestão entrem em contato através do e-mail: .
+
+
+
+Read more: http://www.linhadecodigo.com.br/artigo/3667/classes-wrappers-em-java.aspx#ixzz7aAroseyL

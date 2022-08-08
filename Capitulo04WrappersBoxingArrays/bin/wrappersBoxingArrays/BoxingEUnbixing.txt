@@ -1,0 +1,230 @@
+
+TODO O PROCESSO É FEITO AUTOMATICAMENTE EM TEMPO DE EXECUÇÃO JAVA. MAS CUIDADOS DEVEM SER TOMADOS DURANTE A IMPLEMENTAÇÃO DESSE RECURSO CASO CONTRÁRIO, 
+TERÁ EFEITO NEGATIVO SOBRE O DESEMPENHO DO APLICATIVO.
+
+ANTES DO JDK 1.5, NÃO ERA FÁCIL PARA CONVERTER TIPOS DE DADOS PRIMITIVOS, POR EXEMPLO INT, CHAR, FLOAT, DOUBLE EM SEU OBJETO EQUIVALENTE (CLASSES WRAPPER) - INTEGER, 
+CHARACTER, FLOAT, DOUBLE. O JDK 5 VEIO COM O RECURSO DE CONVERSÃO AUTOMÁTICA DE TIPOS DE DADOS PRIMITIVOS EM SEU OBJETO EQUIVALENTE. ESSE RECURSO É CONHECIDO COMO AUTOBOXING. 
+O CONTRÁRIO DISTO É CONHECIDO COMO UNBOXING, OU SEJA, O PROCESSO DE CONVERSÃO DE OBJETOS EM TIPOS PRIMITIVOS DE DADOS CORRESPONDENTES É CHAMADO DE UNBOXING. EXEMPLO DE CÓDIGO 
+PARA AMBOS AUTOBOXING E UNBOXING É MOSTRADO COMO ABAIXO:
+
+AUTOBOXING
+
+INTEGER INTEGER = 9;
+UNBOXING
+
+INT IN = 0;
+IN = NEW INTEGER(9);
+QUANDO AUTOBOXING E UNBOXING SÃO USADOS?
+AUTOBOXING É APLICADA PELO COMPILADOR DO JAVA NAS SEGUINTES CONDIÇÕES:
+
+QUANDO UM VALOR PRIMITIVO É PASSADO COMO UM PARÂMETRO PARA UM MÉTODO QUE ESPERA UM OBJETO DA CLASSE WRAPPER CORRESPONDENTE.
+QUANDO UM VALOR PRIMITIVO É ATRIBUÍDO A UMA VARIÁVEL DA CLASSE WRAPPER CORRESPONDENTE.
+
+Considere o seguinte exemplo:
+
+Listagem 1: Exemplo de código utilizando Autoboxing
+
+public int sumEvenNumbers(List<Integer> intList ) {
+    int sum = 0;
+    for (Integer i: intList )
+        if ( i % 2 == 0 )
+            sum += i;
+        return sum;
+}
+
+
+ANTES DO JDK 1.5, O TRECHO DE CÓDIGO ACIMA RESULTARIA EM ERRO DE COMPILAÇÃO DESDE O OPERADOR RESTO - '%' E A EXPRESSÃO - '+ =' NÃO PODERIA SER APLICADA EM NÚMEROS INTEIROS. 
+MAS DESDE O JDK 1.5 ESTE PEDAÇO DE CÓDIGO COMPILA E RODA SEM NENHUM ERRO, POIS CONVERTE UM INTEGER PARA INT EM TEMPO DE EXECUÇÃO.
+
+UNBOXING É APLICADA PELO COMPILADOR DO JAVA NAS SEGUINTES CONDIÇÕES:
+
+QUANDO UM OBJETO É PASSADO COMO UM PARÂMETRO PARA UM MÉTODO QUE ESPERA UM VALOR PRIMITIVO CORRESPONDENTE.
+QUANDO UM OBJETO É ATRIBUÍDO A UMA VARIÁVEL DO TIPO PRIMITIVO CORRESPONDENTE.
+
+
+Considere o seguinte exemplo:
+
+Listagem 2: Exemplo de código mostrando Unboxing
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class UnboxingCheck {
+
+    public static void main(String[] args) {
+        Integer in = new Integer(-8);
+
+        // 1. Unboxing through method invocation
+        int absVal = absoluteValue( in );
+        System.out.println( "absolute value of " + in + " = " + absVal );
+
+        List<Double> doubleList = new ArrayList<Double>();
+    // It is autoboxed through method invocation.
+        doubleList.add(3.1416);
+
+        // 2. Unboxing through assignment
+        double phi = doubleList.get(0);
+        System.out.println( "phi = " + phi );
+    }
+
+    public static int absoluteValue( int i ) {
+        return (i < 0) ? -i : i;
+    }
+}
+
+
+AUTOBOXING E UNBOXING PERMITEM QUE O DESENVOLVEDOR ESCREVA SEU CÓDIGO FORMA FÁCIL DE LER E ENTENDER. A TABELA A SEGUIR MOSTRA OS TIPOS DE DADOS PRIMITIVOS E SEUS OBJETOS 
+DELIMITADORES CORRESPONDENTES:
+
+    TIPO PRIMITIVO	       CLASSE WRAPPER
+      BOOLEAN	              BOOLEAN
+       BYTE	                   BYTE
+       CHAR	                CHARACTER
+      FLOAT	                  FLOAT
+       INT	                 INTEGER
+      LONG	                  LONG
+      SHORT	                  SHORT
+
+
+Tabela 1: tipo de dados primitivos e suas classes Wrapper equivalentes
+
+COM OPERADORES DE COMPARAÇÃO: AUTOBOXING E UNBOXING PODEM SER FEITOS COM OS OPERADORES DE COMPARAÇÃO. O SEGUINTE TRECHO DE CÓDIGO ILUSTRA COMO ISSO PODE SER FEITO:
+
+Listagem 3: Exemplo de código mostrando Autoboxing e unboxing usando operadores de comparação
+
+public class BoxedComparator {
+    public static void main(String[] args) {
+        Integer in = new Integer(25);
+        if (in < 35)
+            System.out.println("Value of int = " + in);
+    }
+}
+
+
+AUTOBOXING E UNBOXING COM SOBRECARGA DE MÉTODO: AUTOBOXING OU UNBOXING PODEM SER FEITOS EM CASO DE SOBRECARGA DE MÉTODO. ISTO ACONTECE COM BASE NAS SEGUINTES REGRAS:
+AMPLIAÇÃO BATE BOXE - QUANDO HÁ UMA SITUAÇÃO DE ESCOLHER ENTRE ALARGAMENTO E BOXE, AMPLIAÇÃO LEVA A PREFERÊNCIA:
+
+Listagem 4: Exemplo de código mostrando preferência de sobrecarga
+
+public class WideBoxed {
+    public class WideBoxed {
+    static void methodWide(int i) {
+        System.out.println("int");
+    }
+
+    static void methodWide( Integer i ) {
+        System.out.println("Integer");
+    }
+
+    public static void main(String[] args) {
+        short shVal = 25;
+        methodWide(shVal);
+    }
+   }
+}
+
+A saída deste programa é – int
+
+AMPLIAÇÃO BATE VARARGS - QUANDO HÁ UMA SITUAÇÃO DE ESCOLHER ENTRE AMPLIAÇÃO E VARARGS, AMPLIAÇÃO TEM A PREFERÊNCIA
+
+Listagem 5: Exemplo de código mostrando preferência sobrecarga
+
+public class WideVarArgs {
+
+    static void methodWideVar(int i1, int i2) {
+        System.out.println("int int");
+    }
+
+    static void methodWideVar(Integer... i) {
+        System.out.println("Integers");
+    }
+
+    public static void main( String[] args) {
+        short shVal1 = 25;
+        short shVal2 = 35;
+        methodWideVar( shVal1, shVal2);
+    }
+}
+
+
+BOXE BATE VARARGS - QUANDO HOUVER UMA SITUAÇÃO QUE ESCOLHER ENTRE BOXE E VARARGS, BOXE LEVA A PREFERÊNCIA
+
+Listagem 6: Exemplo de código mostrando preferência sobrecarga
+
+public class BoxVarargs {
+    static void methodBoxVar(Integer in) {
+        System.out.println("Integer");
+    }
+
+    static void methodBoxVar(Integer... i) {
+        System.out.println("Integers");
+    }
+
+    public static void main(String[] args) {
+        int intVal1 = 25;
+        methodBoxVar(intVal1);
+    }
+}
+
+
+GUARDAR NA MENTE PARA USAR AUTOBOXING
+
+COMO SABEMOS QUE TODO BOM RECURSO VEM COM ALGUNS INCONVENIENTES, AUTOBOXING NÃO É UMA EXCEÇÃO A ESTE RESPEITO. ALGUMAS DICAS IMPORTANTES QUE O DESENVOLVEDOR DEVE MANTER EM 
+MENTE AO USAR ESSE RECURSO SÃO COMO ABAIXO:
+
+COMPARANDO OBJETOS COM OPERADOR DE IGUALDADE - O OPERADOR DE IGUALDADE - "==" CONDUZ À CONFUSÃO, POIS ELE PODE SER APLICADO A AMBOS OS TIPOS DE DADOS PRIMITIVOS E OBJETOS. 
+QUANDO O OPERADOR É APLICADA NOS OBJECTOS, ELE REALMENTE COMPARA A REFERÊNCIA DE UM DOS OBJECTOS, E NÃO OS VALORES.
+
+Listagem 7: Exemplo de código mostrando comparação
+
+public class Comparator {
+    public static void main(String[] args) {
+
+        Integer istInt = new Integer(1);
+        Integer secondInt = new Integer(1);
+
+        if (istInt == secondInt) {
+            System.out.println("both one are equal");
+
+        } else {
+            System.out.println("Both one are not equal");
+        }
+    }
+}
+
+
+MISTURANDO OBJETO E PRIMITIVO NA IGUALDADE E OPERADOR RELACIONAL - SE COMPARARMOS UM TIPO DE DADOS PRIMITIVO COM UM OBJETO, O UNBOXING OCORRE QUE PODE LANÇAR UM 
+NULLPOINTEREXCEPTION SE O OBJETO FOR NULO.
+
+CACHED OBJECT - DESDE O MÉTODO VALUEOF () É USADA PARA CRIAR OBJETOS PRIMITIVOS ENCAIXOTADOS, OS OBJETOS USADOS SÃO ARMAZENADOS EM CACHE. DESDE JAVA ARMAZENA NÚMEROS 
+INTEIROS A PARTIR DE: 128-128, ESTES OBJETOS EM CACHE PODEM SE COMPORTAR DE FORMA DIFERENTE.
+
+DEGRADAÇÃO DO DESEMPENHO DO - AUTOBOXING OU UNBOXING DIMINUI A PERFORMANCE DE UM APLICATIVO, POIS CRIA UM OBJETO INDESEJADO QUE LEVA O GC PARA EXECUTAR MAIS FREQÜÊNCIA.
+
+DESVANTAGEM DE AUTOBOXING:
+EMBORA AUTOBOXING TENHA VÁRIAS VANTAGENS, ELE POSSUI A SEGUINTE DESVANTAGEM:
+
+CASO O AUTOBOXING ACONTEÇA DENTRO DE UM LOOP DE OBJETOS DESNECESSÁRIOS, PODE DIMINUIR O DESEMPENHO DA APLICAÇÃO. CONSIDERE O SEGUINTE CÓDIGO:
+
+Listing 8: Exemplo de código mostrando problema de desempenho
+
+public int sumEvenNumbers(List<Integer> intList) {
+    int sum = 0;
+    for (Integer i: intList)
+        if ( i % 2 == 0 )
+            sum += i;
+        return sum;
+}
+
+
+NESTE PEDAÇO DE CÓDIGO, SOMA + = I; IRÁ EXPANDIR COMO SOMA = SOMA + I;. DESDE O '+' OPERAÇÃO NÃO PODE SER FEITA EM OBJETO INTEGER, A JVM DISPARA O UNBOXING DA SOMA 
+INTEGER OBJETO E, EM SEGUIDA, O RESULTADO É EXECUTA AUTOBOXING VOLTA.
+
+ANTES DO JDK 1.5, OS TIPOS DE DADOS INT E INTEGER ERAM DISTINTOS E EM CASO DE SOBRECARGA DE MÉTODO ESTES DOIS TIPOS FORAM USADOS SEM QUALQUER ABORRECIMENTO. AGORA, 
+COM AUTOBOXING E UNBOXING, ESTE TORNOU-SE MAIS COMPLICADO. UM EXEMPLO DISTO É O MÉTODO SOBRECARREGADO EM REMOVER ARRAYLIST. CLASSE ARRAYLIST TEM DOIS MÉTODOS DE 
+REMOVER - REMOVER (INDEX) E REMOVER (OBJETO). NESTE CASO, A SOBRECARGA DE MÉTODOS NÃO ACONTECERÁ E RESPECTIVO MÉTODO SERÁ CHAMADO COM PARÂMETROS APROPRIADOS.
+
+CONCLUSÃO
+AUTOBOXING É O MECANISMO PARA CONVERTER UM TIPO DE DADOS PRIMITIVO NA RESPECTIVA EMBALAGEM OU OBJETO. O COMPILADOR USA VALUEOF () MÉTODO PARA CONVERTER PRIMITIVO PARA OBJECT E 
+USA INTVALUE (), DOUBLEVALUE (), ETC., PARA OBTER O VALOR PRIMITIVO DO OBJETO. EM AUTOBOXING, UM BOOLEAN É CONVERTIDO PARA BOOLEANO, BYTE A BYTE, CHAR DE CARÁTER, AS MUDANÇAS 
+FLUTUADOR PARA FLOAT, INT VAI PARA INTEGER, LONG VAI CONVERTIDOS CURTO EO LONGO PARA CURTO, ENQUANTO QUE NO UNBOXING A CONVERSÃO ACONTECE NO SENTIDO INVERSO.
