@@ -23,4 +23,8 @@ public class ArCondicionado {
  
  - MOdificador private apenas a classe de criação que tem acesso.
  
+ MAIS SOBRE -> http://high5devs.com/2015/02/modificadores-de-acesso-em-java/
+ MAIS SOBRE -> https://www.devmedia.com.br/modificadores-de-acesso-em-java/18822#modulo-mvp
+ MAIS SOBRE -> 
+ 
  */
